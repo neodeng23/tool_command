@@ -7,7 +7,7 @@ gzip xxxxxxx.fastq
 #bcl2fastq
 #测序数据bcl转换成fastq
 
-#fastqc
+fastqc
 #脱氨效果质控
 fastqc [-o output dir] [--(no)extract] [-f fastq|bam|sam] [-c contaminant file] seqfile1 .. seqfileN
 fastqc xxxxxxx.fastq
@@ -19,6 +19,7 @@ fastqc xxxxxxx.fastq
 # -a --adapters 也是输入一个文件，文件的格式Name [Tab] Sequence，储存的是测序的adpater序列信息，如果不输入，目前版本的FastQC就按照通用引物来评估序列时候有adapter的残留
 # -q --quiet 安静运行模式，一般不选这个选项的时候，程序会实时报告运行的状况。
 
+Trimmomatic
 #数据预处理（去除低质量的reads)
 java -jar /opt/biosoft/Trimmomatic-0.30/trimmomatic-0.30.jar PE \
 -threads 20 -phred33 reads1.fastq reads2.fastq \
@@ -42,4 +43,18 @@ LEADING:5 TRAILING:5 SLIDINGWINDOW:5:15 MINLEN:30
 #TOPHRED33    将碱基质量转换为pred33格式
 #TOPHRED64    将碱基质量转换为pred64格式
 
+bismark
+#bismark中的bismark
+#测序比对
+bismark [options] --genome <genome_folder> {-1 <mates1> -2 <mates2> | <singles>}
+#example:
+bismark --genome /data/genomes/homo_sapiens/GRCh37/ test_dataset.fastq
+
+deduplicate_bismark
+#bismark中的deduplicate_bismark功能
+#对比结果进行排序去重
+
+bismark_mathylation_extractor
+#在bismark中
+#胞嘧啶(c)位点的reads计数统计
 
