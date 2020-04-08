@@ -22,33 +22,34 @@ fastqc xxxxxxx.fastq
 Trimmomatic
 #数据预处理（去除低质量的reads)
 java -jar /opt/biosoft/Trimmomatic-0.30/trimmomatic-0.30.jar PE \
--threads 20 -phred33 reads1.fastq reads2.fastq \
-reads1.clean.fastq reads1.unpaired.fastq reads2.clean.fastq reads2.unpaired.fastq \
-  ILLUMINACLIP:/opt/biosoft/Trimmomatic-0.30/adapters/TruSeq3-PE.fa:2:30:10 \
-LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50
-java -jar /database/software/Trimmomatic-0.36/trimmomatic-0.36.jar PE -phred33 \
-SEQ17568_1.fastq SEQ17568_2.fastq SEQ17568_1_clean.fastq SEQ17568_1_unpaird.fastq SEQ17568_2_clean.fastq SEQ17568_2_unpaired.fastq \
--threads 1 -phred33  \
-LEADING:5 TRAILING:5 SLIDINGWINDOW:5:15 MINLEN:30
-#PE/SE    设定对Paired-End或Single-End的reads进行处理，其输入和输出参数稍有不一样。
-#-threads    设置多线程运行数
-#-phred33    设置碱基的质量格式，可选pred64
-#ILLUMINACLIP:TruSeq3-PE.fa:2:30:10    切除adapter序列。参数后面分别接adapter序列的fasta文件：允许的最大mismatch数：palindrome模式下匹配碱基数阈值：simple模式下的匹配碱基数阈值。
-#LEADING:3    切除首端碱基质量小于3的碱基
-#TRAILING:3    切除尾端碱基质量小于3的碱基
-#SLIDINGWINDOW:4:15    从5'端开始进行滑动，当滑动位点周围一段序列(window)的平均碱基低于阈值，则从该处进行切除。Windows的size是4个碱基，其平均碱基质量小于15，则切除。
-#MINLEN:50    最小的reads长度
-#CROP:<length>    保留reads到指定的长度
-#HEADCROP:<length>    在reads的首端切除指定的长度
-#TOPHRED33    将碱基质量转换为pred33格式
+#-threads 20 -phred33 reads1.fastq reads2.fastq \
+#reads1.clean.fastq reads1.unpaired.fastq reads2.clean.fastq reads2.unpaired.fastq \
+#  ILLUMINACLIP:/opt/biosoft/Trimmomatic-0.30/adapters/TruSeq3-PE.fa:2:30:10 \
+#LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50
+#java -jar /database/software/Trimmomatic-0.36/trimmomatic-0.36.jar PE -phred33 \
+#SEQ17568_1.fastq SEQ17568_2.fastq SEQ17568_1_clean.fastq SEQ17568_1_unpaird.fastq SEQ17568_2_clean.fastq SEQ17568_2_unpaired.fastq \
+#-threads 1 -phred33  \
+#LEADING:5 TRAILING:5 SLIDINGWINDOW:5:15 MINLEN:30
+##PE/SE    设定对Paired-End或Single-End的reads进行处理，其输入和输出参数稍有不一样。
+##-threads    设置多线程运行数
+##-phred33    设置碱基的质量格式，可选pred64
+##ILLUMINACLIP:TruSeq3-PE.fa:2:30:10    切除adapter序列。参数后面分别接adapter序列的fasta文件：允许的最大mismatch数：palindrome模式下匹配碱基数阈值：simple模式下的匹配碱基数阈值。
+##LEADING:3    切除首端碱基质量小于3的碱基
+##TRAILING:3    切除尾端碱基质量小于3的碱基
+##SLIDINGWINDOW:4:15    从5'端开始进行滑动，当滑动位点周围一段序列(window)的平均碱基低于阈值，则从该处进行切除。Windows的size是4个碱基，其平均碱基质量小于15，则切除。
+##MINLEN:50    最小的reads长度
+##CROP:<length>    保留reads到指定的长度
+##HEADCROP:<length>    在reads的首端切除指定的长度
+##TOPHRED33    将碱基质量转换为pred33格式
 #TOPHRED64    将碱基质量转换为pred64格式
 
 bismark
 #bismark中的bismark
 #测序比对
 bismark [options] --genome <genome_folder> {-1 <mates1> -2 <mates2> | <singles>}
+index路径:/data_bak/genome/hg19/bismark_bowtie2index
 #example:
-bismark --genome /data/genomes/homo_sapiens/GRCh37/ test_dataset.fastq
+/database/software/Bismark-master/bismark --bowtie2 -q --score_min L,0,-0.2 -p 2 --dovetail --maxins 500 -1 --genome_folder /data_bak/genome/hg19/bismark_bowtie2index/ -1 SEQ17568_1_clean.fastq -2 SEQ17568_2_clean.fastq
 
 deduplicate_bismark
 #bismark中的deduplicate_bismark功能
